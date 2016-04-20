@@ -5,4 +5,6 @@ package sdpd.com.blereminderapp;
  */
 public interface AddReminderListener {
     public void onReminderAdded(Reminder rem);
+    public void onReminderSelected(int position);
+    public void onReminderDone(int position);
 }

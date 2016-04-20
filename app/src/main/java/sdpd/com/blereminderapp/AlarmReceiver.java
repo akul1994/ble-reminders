@@ -17,13 +17,15 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("AlarmReceiver", "Alarm received");
-        displayNotification(context, intent.getStringExtra(AppConstants.TITLE), intent.getStringExtra(AppConstants.LOCATION_ID));
+        Reminder rem=intent.getParcelableExtra(AppConstants.REMINDER_INTENT);
+        String key=intent.getStringExtra(AppConstants.KEY_INTENT);
+        displayNotification(context,rem,key);
     }
 
-    public void displayNotification(Context context, String title, String locationId) {
+    public void displayNotification(Context context, Reminder rem,String key) {
         Notification.Builder builder = new Notification.Builder(context);
-        builder.setContentTitle(title);
-        builder.setContentText(AppConstants.getLocationName(locationId));
+        builder.setContentTitle(rem.title);
+        builder.setContentText(Utils.getLocationName(rem.locationId));
         builder.setSmallIcon(R.drawable.abc_ic_search_api_mtrl_alpha);
         builder.setVibrate(new long[]{0, 1000, 1000, 1000, 1000});
         builder.setLights(Color.WHITE, 3000, 3000);
@@ -41,4 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(AppConstants.NOTIFICATION_ID, notification);
     }
+
+
+
 }

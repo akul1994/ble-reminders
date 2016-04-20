@@ -6,30 +6,61 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="8dp"
-    android:background="@drawable/list_bg">
+    android:background="@color/bg_white"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+   >
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:id="@+id/reminderRowLayout">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/imageView6"
-            android:src="@android:drawable/btn_star_big_on"
-            android:layout_marginLeft="8dp"
-            android:layout_gravity="center_vertical" />
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/bg_grey"
-            android:layout_marginLeft="8dp" />
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="07"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textColor="@color/bg_white"
+                android:id="@+id/dateText"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/monthText"
+                android:textIsSelectable="false" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="APR"
+                android:gravity="center"
+                android:textSize="10dp"
+                android:textColor="@color/bg_white"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/monthText"
+               />
+
+
+
+            </RelativeLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -58,39 +89,49 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:gravity="center_vertical|right">
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/imageView7"
-            android:src="@android:drawable/btn_star_big_on"
-            android:layout_marginLeft="8dp" />
+        android:gravity="center_vertical"
+        android:paddingTop="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="20:00 to 21:00"
-            android:id="@+id/remTimeText"
-            android:textColor="@color/dark_grey"
-            android:textSize="12dp"
-            android:layout_marginLeft="8dp"
-            android:gravity="center" />
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/bg_grey"
-            android:layout_marginLeft="8dp" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:layout_marginLeft="16dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/imageView7"
+                android:src="@drawable/ic_time"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="20:00 to 21:00"
+                android:id="@+id/remTimeText"
+                android:textColor="@color/dark_grey"
+                android:textSize="12dp"
+                android:layout_marginLeft="8dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="8dp"
-            android:id="@+id/doneLayout">
+            android:id="@+id/doneLayout"
+            android:gravity="center"
+            android:clickable="true">
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/imageView17"
-            android:src="@android:drawable/btn_star_big_on"
+            android:src="@drawable/ic_tick"
              />
 
         <TextView
@@ -103,22 +144,21 @@
             android:layout_marginLeft="8dp"
             android:gravity="center" />
         </LinearLayout>
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/bg_grey"
-            android:layout_marginLeft="8dp" />
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="8dp"
-            android:id="@+id/delLayout">
+            android:id="@+id/delLayout"
+            android:gravity="center"
+            android:clickable="true">
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/imageView27"
-            android:src="@android:drawable/btn_star_big_on"
+            android:src="@drawable/ic_delete"
             android:layout_marginLeft="8dp" />
 
         <TextView

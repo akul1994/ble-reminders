@@ -8,7 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Akul on 19-04-2016.
@@ -18,6 +20,8 @@ public class ReminderListAdapter extends BaseAdapter {
     private ArrayList<Reminder> remList;
     private LayoutInflater inflater;
     private Context context;
+    private ArrayList<Integer> changeView;
+    private AddReminderListener addReminderListener;
 
     public ReminderListAdapter(Context context,ArrayList<Reminder> remList)
     {
@@ -40,6 +44,17 @@ public class ReminderListAdapter extends BaseAdapter {
         return null;
     }
 
+    public void setAddReminderListener(AddReminderListener addReminderListener)
+    {
+        this.addReminderListener=addReminderListener;
+    }
+    public void setRemList(ArrayList<Reminder> remList)
+    {
+        remList.clear();
+        this.remList=remList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -57,13 +72,39 @@ public class ReminderListAdapter extends BaseAdapter {
             viewHolder.doneLayout=(LinearLayout)convertView.findViewById(R.id.doneLayout);
             viewHolder.deleteLayout=(LinearLayout)convertView.findViewById(R.id.delLayout);
             viewHolder.remTimeText=(TextView)convertView.findViewById(R.id.remTimeText);
+            viewHolder.dateText=(TextView)convertView.findViewById(R.id.dateText);
+            viewHolder.monthText=(TextView)convertView.findViewById(R.id.monthText);
+            viewHolder.reminderRow=(LinearLayout)convertView.findViewById(R.id.reminderRowLayout);
+            viewHolder.reminderRow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addReminderListener.onReminderSelected((Integer)v.getTag());
+                }
+            });
+            viewHolder.doneLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addReminderListener.onReminderDone((Integer) v.getTag());
+                }
+            });
+            viewHolder.deleteLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addReminderListener.onReminderDone((Integer)v.getTag());
+                }
+            });
             convertView.setTag(viewHolder);
         }
         viewHolder=(ReminderViewHolder)convertView.getTag();
+        viewHolder.reminderRow.setTag(position);
+        viewHolder.doneLayout.setTag(position);
+        viewHolder.deleteLayout.setTag(position);
         Reminder rem=remList.get(position);
         viewHolder.remTitle.setText(rem.title);
-        viewHolder.remLocation.setText(AppConstants.getLocationName(rem.locationId));
+        viewHolder.remLocation.setText(Utils.getLocationName(rem.locationId));
         viewHolder.remTimeText.setText(rem.startTime+" to "+rem.endTime);
+        viewHolder.dateText.setText(getDateAndMonth(rem.date,1));
+        viewHolder.monthText.setText(getDateAndMonth(rem.date,0));
         return convertView;
     }
 
@@ -75,5 +116,27 @@ public class ReminderListAdapter extends BaseAdapter {
         LinearLayout doneLayout;
         LinearLayout deleteLayout;
         TextView remTimeText;
+        TextView dateText;
+        TextView monthText;
+        LinearLayout reminderRow;
+    }
+    public String getDateAndMonth(String tempdate,int flag)
+    {
+        String format1;
+        Date date=null;
+        SimpleDateFormat defFormat=new SimpleDateFormat("dd/MM/yyyy");
+        if(flag==0)
+            format1="MMM";
+        else
+        format1="dd";
+        SimpleDateFormat format = new SimpleDateFormat(format1);
+        try {
+            date=defFormat.parse(tempdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String formattedDate=format.format(date);
+        return formattedDate;
+
     }
 }

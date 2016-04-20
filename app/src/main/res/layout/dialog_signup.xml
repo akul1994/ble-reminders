@@ -6,7 +6,7 @@
     android:background="@color/bg_white"
     >
     <ImageView
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/ic_icon"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:contentDescription="@string/app_name" />

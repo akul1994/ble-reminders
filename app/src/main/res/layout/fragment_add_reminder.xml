@@ -6,12 +6,14 @@
    >
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:focusable="true">
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +32,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/imageView"
-            android:src="@android:drawable/ic_menu_my_calendar" />
+            android:src="@drawable/ic_date" />
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -85,7 +87,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/imageView2"
-            android:src="@android:drawable/ic_menu_my_calendar" />
+            android:src="@drawable/ic_time" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -135,7 +137,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/imageView4"
-            android:src="@android:drawable/ic_menu_my_calendar" />
+            android:src="@drawable/ic_location" />
 
         <Spinner
             android:layout_width="wrap_content"
@@ -161,7 +163,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/imageView3"
-            android:src="@android:drawable/ic_menu_my_calendar" />
+            android:src="@drawable/ic_alert" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -216,18 +218,21 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/imageView5"
-            android:src="@android:drawable/ic_menu_my_calendar" />
+            android:src="@drawable/ic_notes" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/notesText"
             android:hint="@string/notes_hint"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp" />
 
     </LinearLayout>
+
     </LinearLayout>
     </ScrollView>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
