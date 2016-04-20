@@ -156,7 +156,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportFragmentManager().beginTransaction().remove(addReminderFragment).commit();
             reminderRef.push().setValue(rem);
             remList.add(rem);
-            mAppAlarmManager.setAlarm(rem);
+            if (rem.alertTime != -1)
+                mAppAlarmManager.setAlarm(rem);
             Snackbar.make(coordinatorLayout, "Reminder Succesfully added", Snackbar.LENGTH_SHORT).show();
             Log.d("info", rem.toString());
         } catch (Exception e) {

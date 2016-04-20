@@ -33,5 +33,6 @@
     <string name="phone">Phone Number</string>
     <string name="confirm_pass">Confirm Password</string>
     <string name="enter_details">Enter your details to sign up.</string>
+    <string name="user_id">user_id</string>
 
 </resources>
