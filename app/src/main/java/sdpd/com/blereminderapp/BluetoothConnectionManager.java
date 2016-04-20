@@ -30,7 +30,7 @@ public class BluetoothConnectionManager {
     private double minDistance = Double.MAX_VALUE;
     private String closestDeviceAddress = "";
 
-    public BluetoothConnectionManager(Context context, BluetoothAdapter.LeScanCallback callback, BeaconDistanceListener listener){
+    public BluetoothConnectionManager(Context context, BluetoothAdapter.LeScanCallback callback, BeaconDistanceListener listener) {
         mContext = context;
         mLeScanCallback = callback;
         mBeaconDistanceListener = listener;
@@ -45,25 +45,25 @@ public class BluetoothConnectionManager {
 //        mKnownDeviceAddresses.add("");
     }
 
-    public BluetoothAdapter getBluetoothAdapter(){
+    public BluetoothAdapter getBluetoothAdapter() {
         return mBluetoothAdapter;
     }
 
-    public void startScan(){
+    public void startScan() {
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
 
-    public void stopScan(){
+    public void stopScan() {
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
     }
 
-    public void deviceAvailable(BluetoothDevice device, int rssi){
+    public void deviceAvailable(BluetoothDevice device, int rssi) {
         Log.d(TAG, "Device Available " + device.getAddress() + " Rssi = " + rssi);
 
         double distance = getDistanceFromRssi(rssi);
-        Log.d(TAG, "Distance = " + distance + " Min = "+minDistance);
+        Log.d(TAG, "Distance = " + distance + " Min = " + minDistance);
 
-        if (mKnownDeviceAddresses.contains(device.getAddress()) && !mDeviceToDistanceMap.containsKey(device.getAddress())){
+        if (mKnownDeviceAddresses.contains(device.getAddress()) && !mDeviceToDistanceMap.containsKey(device.getAddress())) {
             mDeviceToDistanceMap.put(device.getAddress(), -1.0);
         } else {
             mDeviceToDistanceMap.put(device.getAddress(), distance);
@@ -71,10 +71,8 @@ public class BluetoothConnectionManager {
 
         Map.Entry<String, Double> minEntry = null;
 
-        for (Map.Entry<String, Double> entry : mDeviceToDistanceMap.entrySet())
-        {
-            if (minEntry == null || entry.getValue().compareTo(minEntry.getValue()) < 0)
-            {
+        for (Map.Entry<String, Double> entry : mDeviceToDistanceMap.entrySet()) {
+            if (minEntry == null || entry.getValue().compareTo(minEntry.getValue()) < 0) {
                 minEntry = entry;
             }
         }
@@ -88,18 +86,18 @@ public class BluetoothConnectionManager {
             }
         }
 
-        Log.d(TAG, "Closest Device Address = "+closestDeviceAddress);
+        Log.d(TAG, "Closest Device Address = " + closestDeviceAddress);
     }
 
     public String getClosestDeviceAddress() {
         return closestDeviceAddress;
     }
 
-    public double getDistanceFromRssi(double rssi){
-        return Math.pow(10.0,((rssi-(-54.0))/-22.5));
+    public double getDistanceFromRssi(double rssi) {
+        return Math.pow(10.0, ((rssi - (-54.0)) / -22.5));
     }
 }
 
-interface BeaconDistanceListener{
+interface BeaconDistanceListener {
     public void closestBeaconUpdated(String beaconAddress);
 }

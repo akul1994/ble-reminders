@@ -35,13 +35,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button registerB;
     Firebase firebaseRef;
     ProgressDialog progress;
-    EditText fullName,userName,pass_signupEt,confirmpassEt,phoneEt;
+    EditText fullName, userName, pass_signupEt, confirmpassEt, phoneEt;
     String pass;
     User userData;
     String userId;
-    final String USERS="users";
+    final String USERS = "users";
     AlertDialog regDialog;
-
 
 
     @Override
@@ -52,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginET = (EditText) findViewById(R.id.nameEt);
         passEt = (EditText) findViewById(R.id.passwordEt);
         loginB = (Button) findViewById(R.id.loginButton);
-        registerB=(Button)findViewById(R.id.registerButton);
+        registerB = (Button) findViewById(R.id.registerButton);
         firebaseRef = new Firebase(AppConstants.URL_FIREBASE);
         loginB.setOnClickListener(this);
         registerB.setOnClickListener(this);
@@ -72,12 +71,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.loginButton:
                 final String username = loginET.getText().toString();
                 String password = passEt.getText().toString();
-                if(username.length()>0&&password.length()>0) {
-                    progress=ProgressDialog.show(this,"",getString(R.string.loading),true);
+                if (username.length() > 0 && password.length() > 0) {
+                    progress = ProgressDialog.show(this, "", getString(R.string.loading), true);
                     firebaseRef.authWithPassword(username, password, new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {
-                            userId=authData.getUid();
+                            userId = authData.getUid();
                             Toast.makeText(LoginActivity.this, "Successfully logged in.", Toast.LENGTH_SHORT).show();
                             getUserData();
 
@@ -90,68 +89,64 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             showError(firebaseError.getMessage());
                         }
                     });
-                }
-                else
+                } else
                     showError(getString(R.string.empty_login));
                 break;
             case R.id.registerButton:
-               View dialView= LayoutInflater.from(this).inflate(R.layout.dialog_signup, null);
-                 regDialog = new AlertDialog.Builder(this).create();
+                View dialView = LayoutInflater.from(this).inflate(R.layout.dialog_signup, null);
+                regDialog = new AlertDialog.Builder(this).create();
                 regDialog.setView(dialView);
-                fullName=(EditText)dialView.findViewById(R.id.nameEt);
-                userName=(EditText)dialView.findViewById(R.id.emailEt);
-                pass_signupEt=(EditText)dialView.findViewById(R.id.passEt);
-                confirmpassEt=(EditText)dialView.findViewById(R.id.confirmpassEt);
-                phoneEt=(EditText)dialView.findViewById(R.id.phoneEt);
-                userData=new User();
-                Button reg=(Button)dialView.findViewById(R.id.regButton);
+                fullName = (EditText) dialView.findViewById(R.id.nameEt);
+                userName = (EditText) dialView.findViewById(R.id.emailEt);
+                pass_signupEt = (EditText) dialView.findViewById(R.id.passEt);
+                confirmpassEt = (EditText) dialView.findViewById(R.id.confirmpassEt);
+                phoneEt = (EditText) dialView.findViewById(R.id.phoneEt);
+                userData = new User();
+                Button reg = (Button) dialView.findViewById(R.id.regButton);
                 reg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        userData.fullName=fullName.getText().toString();
-                        userData.emailId=userName.getText().toString();
-                        pass=pass_signupEt.getText().toString();
-                        userData.phone=phoneEt.getText().toString();
-                        if(verifyInput(userData.fullName, userData.emailId,pass, userData.phone))
-                            signUp( userData,pass);
+                        userData.fullName = fullName.getText().toString();
+                        userData.emailId = userName.getText().toString();
+                        pass = pass_signupEt.getText().toString();
+                        userData.phone = phoneEt.getText().toString();
+                        if (verifyInput(userData.fullName, userData.emailId, pass, userData.phone))
+                            signUp(userData, pass);
                     }
                 });
                 regDialog.show();
                 break;
 
 
-
-
         }
     }
-    public boolean verifyInput(String name,String email,String pass,String phone)
-    {
-        if(name==null||name.length()<1) {
+
+    public boolean verifyInput(String name, String email, String pass, String phone) {
+        if (name == null || name.length() < 1) {
             showError("Please enter your full name");
             return false;
         }
-        if(email==null||email.length()<1) {
+        if (email == null || email.length() < 1) {
             showError("Please enter a valid email");
             return false;
         }
-        if(phone==null||phone.length()<10) {
+        if (phone == null || phone.length() < 10) {
             showError("Please enter a valid mobile number");
             return false;
         }
-        if(pass==null||pass.length()<1){
+        if (pass == null || pass.length() < 1) {
             showError("Please enter a password");
             return false;
         }
-        if(pass.equals(confirmpassEt.getText().toString())==false)
-        {
+        if (pass.equals(confirmpassEt.getText().toString()) == false) {
             showError("Passwords do not match");
             return false;
         }
-        return  true;
+        return true;
     }
-    public void signUp(final User user,String pass)
-    {
-        progress=ProgressDialog.show(this,"",getString(R.string.loading),true);
+
+    public void signUp(final User user, String pass) {
+        progress = ProgressDialog.show(this, "", getString(R.string.loading), true);
         firebaseRef.createUser(user.emailId, pass, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> stringObjectMap) {
@@ -166,9 +161,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    public void storeData(String uid,User user)
-    {
-       Firebase userRef=firebaseRef.child(AppConstants.USERS).child(uid).child(AppConstants.INFO);
+    public void storeData(String uid, User user) {
+        Firebase userRef = firebaseRef.child(AppConstants.USERS).child(uid).child(AppConstants.INFO);
         userRef.setValue(user);
         progress.dismiss();
         regDialog.dismiss();
@@ -176,10 +170,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void showError(String message)
-    {
+    public void showError(String message) {
         AlertDialog dialog;
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle(R.string.error);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -188,17 +181,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        dialog=builder.create();
+        dialog = builder.create();
         dialog.show();
     }
-    void getUserData()
-    {
-        firebaseRef = new Firebase(AppConstants.URL_FIREBASE+"/"+AppConstants.USERS+"/"+userId+"/"+AppConstants.INFO);
+
+    void getUserData() {
+        firebaseRef = new Firebase(AppConstants.URL_FIREBASE + "/" + AppConstants.USERS + "/" + userId + "/" + AppConstants.INFO);
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("info", dataSnapshot.toString());
-                userData=dataSnapshot.getValue(User.class);
+                userData = dataSnapshot.getValue(User.class);
                 launchMain();
             }
 
@@ -210,11 +203,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    void launchMain()
-    {
-        Intent intent=new Intent(this,MainActivity.class);
-        intent.putExtra(AppConstants.UID_INTENT,userId);
-        intent.putExtra(AppConstants.USER_INTENT,userData);
+    void launchMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(AppConstants.UID_INTENT, userId);
+        intent.putExtra(AppConstants.USER_INTENT, userData);
         startActivity(intent);
 
     }

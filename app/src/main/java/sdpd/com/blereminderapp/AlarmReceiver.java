@@ -20,12 +20,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         displayNotification(context, intent.getStringExtra(AppConstants.TITLE), intent.getStringExtra(AppConstants.LOCATION_ID));
     }
 
-    public void displayNotification(Context context, String title, String locationId){
+    public void displayNotification(Context context, String title, String locationId) {
         Notification.Builder builder = new Notification.Builder(context);
         builder.setContentTitle(title);
         builder.setContentText(AppConstants.getLocationName(locationId));
         builder.setSmallIcon(R.drawable.abc_ic_search_api_mtrl_alpha);
-        builder.setVibrate(new long[] { 0, 1000, 1000, 1000, 1000 });
+        builder.setVibrate(new long[]{0, 1000, 1000, 1000, 1000});
         builder.setLights(Color.WHITE, 3000, 3000);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(alarmSound);

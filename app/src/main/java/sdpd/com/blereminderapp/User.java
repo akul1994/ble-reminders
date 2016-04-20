@@ -11,8 +11,8 @@ public class User implements Parcelable {
     String emailId;
     String phone;
 
-    public User()
-    {}
+    public User() {
+    }
 
     public String getFullName() {
         return fullName;
@@ -22,7 +22,6 @@ public class User implements Parcelable {
     public String getEmailId() {
         return emailId;
     }
-
 
 
     public String getPhone() {
@@ -42,21 +41,18 @@ public class User implements Parcelable {
         dest.writeString(phone);
     }
 
-    private User(Parcel in)
-    {
-        fullName=in.readString();
-        emailId=in.readString();
-        phone=in.readString();
+    private User(Parcel in) {
+        fullName = in.readString();
+        emailId = in.readString();
+        phone = in.readString();
     }
 
-    public static final Creator<User> CREATOR=new Creator<User>()
-    {
-        public User createFromParcel(Parcel in)
-        {
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        public User createFromParcel(Parcel in) {
             return new User(in);
         }
-        public User[] newArray(int size)
-        {
+
+        public User[] newArray(int size) {
             return new User[size];
         }
     };

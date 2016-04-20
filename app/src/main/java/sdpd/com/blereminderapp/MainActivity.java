@@ -35,7 +35,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,AddReminderListener,BeaconDistanceListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddReminderListener, BeaconDistanceListener {
 
     private FloatingActionButton mFAB;
     private AddReminderFragment addReminderFragment;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fetchReminders();
     }
 
-    public void checkForBluetooth(){
+    public void checkForBluetooth() {
         // Ensures Bluetooth is available on the device and it is enabled. If not,
         // displays a dialog requesting user permission to enable Bluetooth.
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.toggle_scan:
                 if (mIsScanning) {
                     mConnectionManager.stopScan();
@@ -120,15 +120,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void initialize()
-    {
-        remList=new ArrayList<>();
-        mFAB=(FloatingActionButton)findViewById(R.id.fab);
+    private void initialize() {
+        remList = new ArrayList<>();
+        mFAB = (FloatingActionButton) findViewById(R.id.fab);
         mFAB.setOnClickListener(this);
-        coordinatorLayout=(CoordinatorLayout)findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         Firebase.setAndroidContext(this);
-        uid=getIntent().getStringExtra(AppConstants.UID_INTENT);
-        reminderRef=new Firebase(AppConstants.URL_FIREBASE).child(AppConstants.USERS).child(uid).child(AppConstants.REMINDERS);;
+        uid = getIntent().getStringExtra(AppConstants.UID_INTENT);
+        reminderRef = new Firebase(AppConstants.URL_FIREBASE).child(AppConstants.USERS).child(uid).child(AppConstants.REMINDERS);
+        ;
         reminderRef.child(uid);
 
 
@@ -136,17 +136,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.fab:
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 addReminderFragment = new AddReminderFragment();
                 addReminderFragment.setAddReminderListener(this);
-                ft.add(R.id.content_frame,addReminderFragment);
-                ft. commit();
+                ft.add(R.id.content_frame, addReminderFragment);
+                ft.commit();
                 fm.executePendingTransactions();
-            break;
+                break;
         }
     }
 
@@ -166,10 +165,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void showError(String message)
-    {
+    public void showError(String message) {
         AlertDialog dialog;
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle(R.string.error);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -178,22 +176,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        dialog=builder.create();
+        dialog = builder.create();
         dialog.show();
     }
 
-    public void fetchReminders()
-    {
+    public void fetchReminders() {
         Query queryRef = reminderRef.orderByChild("date");
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Log.d("info",postSnapshot.toString());
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Log.d("info", postSnapshot.toString());
                     remList.add(postSnapshot.getValue(Reminder.class));
                 }
-                Log.d("info",remList.size()+"");
-
+                Log.d("info", remList.size() + "");
 
 
             }
