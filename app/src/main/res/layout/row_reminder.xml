@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_grey">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/list_bg">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/bg_white"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp">
+        android:layout_height="60dp">
 
         <ImageView
             android:layout_width="40dp"
@@ -23,7 +23,7 @@
         <View
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="@color/dark_grey"
+            android:background="@color/bg_grey"
             android:layout_marginLeft="8dp" />
 
         <LinearLayout
@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Take the beacon to class"
-                android:id="@+id/textView3"
+                android:id="@+id/remTitleText"
                 android:textStyle="bold"
                 android:textSize="16dp"
                 android:padding="8dp" />
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="B wing"
-                android:id="@+id/textView4"
+                android:id="@+id/remLocationText"
                 android:textSize="16dp"
                 android:paddingLeft="8dp"
                 android:textColor="@color/dark_grey" />
@@ -53,18 +53,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/dark_grey"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:background="@color/bg_grey" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_white"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:padding="4dp"
-        android:gravity="center_vertical">
+        android:layout_height="25dp"
+        android:gravity="center_vertical|right">
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -76,11 +70,68 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="20:00 to 21:00"
-            android:id="@+id/textView5"
+            android:id="@+id/remTimeText"
             android:textColor="@color/dark_grey"
             android:textSize="12dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="8dp"
             android:gravity="center" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/bg_grey"
+            android:layout_marginLeft="8dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="8dp"
+            android:id="@+id/doneLayout">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/imageView17"
+            android:src="@android:drawable/btn_star_big_on"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Done"
+            android:id="@+id/textView15"
+            android:textColor="@color/dark_grey"
+            android:textSize="12dp"
+            android:layout_marginLeft="8dp"
+            android:gravity="center" />
+        </LinearLayout>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/bg_grey"
+            android:layout_marginLeft="8dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="8dp"
+            android:id="@+id/delLayout">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/imageView27"
+            android:src="@android:drawable/btn_star_big_on"
+            android:layout_marginLeft="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Delete"
+            android:id="@+id/textView25"
+            android:textColor="@color/dark_grey"
+            android:textSize="12dp"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
+            android:layout_marginRight="8dp" />
+            </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

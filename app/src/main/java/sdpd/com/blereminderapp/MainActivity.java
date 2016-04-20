@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Firebase reminderRef;
     private String uid;
     private ArrayList<Reminder> remList;
+    private ListView remListView;
+    private ReminderListAdapter reminderListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initialize()
     {
-        remList=new ArrayList<>();
+        remList=new ArrayList<Reminder>();
         mFAB=(FloatingActionButton)findViewById(R.id.fab);
         mFAB.setOnClickListener(this);
         coordinatorLayout=(CoordinatorLayout)findViewById(R.id.coordinatorLayout);
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         uid=getIntent().getStringExtra(AppConstants.UID_INTENT);
         reminderRef=new Firebase(AppConstants.URL_FIREBASE).child(AppConstants.USERS).child(uid).child(AppConstants.REMINDERS);;
         reminderRef.child(uid);
+        remListView=(ListView)findViewById(R.id.reminderList);
 
 
     }
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportFragmentManager().beginTransaction().remove(addReminderFragment).commit();
        reminderRef.push().setValue(rem);
             remList.add(rem);
+            reminderListAdapter.notifyDataSetChanged();
         Snackbar.make(coordinatorLayout, "Reminder Succesfully added", Snackbar.LENGTH_SHORT).show();
         Log.d("info",rem.toString());
             }
@@ -107,12 +112,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Log.d("info",postSnapshot.toString());
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Log.d("info", postSnapshot.toString());
                     remList.add(postSnapshot.getValue(Reminder.class));
+                    setupListView();
                 }
-                Log.d("info",remList.size()+"");
-
+                Log.d("info", remList.size() + "");
 
 
             }
@@ -122,5 +127,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+    }
+
+    void setupListView()
+    {
+        reminderListAdapter=new ReminderListAdapter(this,remList);
+        remListView.setAdapter(reminderListAdapter);
     }
 }

@@ -13,6 +13,6 @@
     <color name="mdtp_accent_color_dark">#303F9F</color>
     <color name="transparent">#009f3230</color>
     <color name="bg_white">#ffffff</color>
-    <color name="bg_grey">#B6B6B6</color>
+    <color name="bg_grey">#e8e8e8</color>
     <color name="dark_grey">#727272</color>
 </resources>
