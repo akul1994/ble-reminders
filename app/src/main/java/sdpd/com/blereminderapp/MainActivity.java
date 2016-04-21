@@ -8,30 +8,21 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -39,7 +30,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddReminderListener, BeaconDistanceListener {
 
@@ -61,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> remKeys;
 
     private int REQUEST_ENABLE_BT = 1;
-
+    private boolean isFromNotification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +60,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mConnectionManager = new BluetoothConnectionManager(getApplicationContext(), mLeScanCallback, this);
         mBluetoothAdapter = mConnectionManager.getBluetoothAdapter();
         mAppAlarmManager = new AppAlarmManager(getApplicationContext());
+        remList = new ArrayList<>();
 
+        isFromNotification=getIntent().getBooleanExtra(AppConstants.INTENT_FROM_NOTIF, false);
         checkForBluetooth();
 
-        initialize();
-        fetchReminders();
+        initViews();
+
+        if(isFromNotification) {
+            remList=getIntent().getParcelableArrayListExtra(AppConstants.REMINDER_LIST);
+            setupListView();
+        }
+        else {
+            initData();
+            fetchReminders();
+        }
+
         sharedpreferences = getSharedPreferences(AppConstants.SHARED_PREF, Context.MODE_PRIVATE);
         remKeys=new ArrayList<>();
 
@@ -131,21 +132,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void closestBeaconUpdated(String beaconAddress) {
         // TODO
-
+        ArrayList<Reminder> list = Utils.getReminderList(this, "" + Utils.getLocIdFromBeaconAddress(beaconAddress));
+        Utils.displayNotification(this, list, "");
     }
 
-    private void initialize() {
-        remList = new ArrayList<>();
+    private void initViews(){
         mFAB = (FloatingActionButton) findViewById(R.id.fab);
         mFAB.setOnClickListener(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        remListView=(ListView)findViewById(R.id.reminderList);
+    }
+
+    private void initData() {
         Firebase.setAndroidContext(this);
         uid = getIntent().getStringExtra(AppConstants.UID_INTENT);
         reminderRef = new Firebase(AppConstants.URL_FIREBASE).child(AppConstants.USERS).child(uid).child(AppConstants.REMINDERS);
         reminderRef.child(uid);
-        remListView=(ListView)findViewById(R.id.reminderList);
-
-
     }
 
     @Override

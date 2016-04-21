@@ -17,33 +17,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("AlarmReceiver", "Alarm received");
-        Reminder rem=intent.getParcelableExtra(AppConstants.REMINDER_INTENT);
-        String key=intent.getStringExtra(AppConstants.KEY_INTENT);
-        displayNotification(context,rem,key);
+        Reminder rem = intent.getParcelableExtra(AppConstants.REMINDER_INTENT);
+        String key = intent.getStringExtra(AppConstants.KEY_INTENT);
+        Utils.displayNotification(context,rem,key);
     }
-
-    public void displayNotification(Context context, Reminder rem,String key) {
-        Notification.Builder builder = new Notification.Builder(context);
-        builder.setContentTitle(rem.title);
-        builder.setContentText(Utils.getLocationName(rem.locationId));
-        builder.setSmallIcon(R.drawable.abc_ic_search_api_mtrl_alpha);
-        builder.setVibrate(new long[]{0, 1000, 1000, 1000, 1000});
-        builder.setLights(Color.WHITE, 3000, 3000);
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(alarmSound);
-
-        /* Uncomment to add a click option for the notif and set the appropriate activity to open.
-
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntent);
-        */
-        Notification notification = builder.build();
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(AppConstants.NOTIFICATION_ID, notification);
-    }
-
-
 
 }

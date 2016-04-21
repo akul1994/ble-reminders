@@ -22,8 +22,7 @@ public class AppConstants {
     public static final String UID_INTENT = "uid_intent";
     public static final String USER_INTENT = "user_intent";
     public static final String REMINDER_INTENT="reminder_intent";
-    public static final String TITLE = "title";
-    public static final String LOCATION_ID = "loc_id";
+    public static final String INTENT_FROM_NOTIF = "from_notif";
 
     public static final String REM_A = "REM_A_WING";
     public static final String REM_B = "REM_B_DOME";
@@ -32,7 +31,7 @@ public class AppConstants {
 
     public static final int NOTIFICATION_ID = 1;
 
-
+    public static final String REMINDER_LIST = "reminder_list";
 
 
 }
