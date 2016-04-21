@@ -24,7 +24,7 @@ public class AppAlarmManager {
         mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
     }
 
-    public void setAlarm(Reminder reminder) {
+    public void setAlarm(Reminder reminder,String key) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date;
         try {
@@ -34,8 +34,8 @@ public class AppAlarmManager {
             Log.d("AlarmManager", "Setting alarm for time " + time);
 
             Intent intent = new Intent(mContext, AlarmReceiver.class);
-            intent.putExtra(AppConstants.TITLE, reminder.title);
-            intent.putExtra(AppConstants.LOCATION_ID, reminder.locationId);
+            intent.putExtra(AppConstants.REMINDER_INTENT,reminder);
+            intent.putExtra(AppConstants.KEY_INTENT,key);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 123, intent, 0);
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);

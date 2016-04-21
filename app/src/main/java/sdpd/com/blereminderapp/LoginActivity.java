@@ -55,6 +55,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebaseRef = new Firebase(AppConstants.URL_FIREBASE);
         loginB.setOnClickListener(this);
         registerB.setOnClickListener(this);
+        if(firebaseRef.getAuth()!=null)
+        {
+            userId=firebaseRef.getAuth().getUid();
+            getUserData();
+        }
 
 
     }
@@ -208,6 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra(AppConstants.UID_INTENT, userId);
         intent.putExtra(AppConstants.USER_INTENT, userData);
         startActivity(intent);
+        finish();
 
     }
 

@@ -20,7 +20,10 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Akul on 13-04-2016.
@@ -130,11 +133,12 @@ public class AddReminderFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.startTextView:
-                starttimePickerDialog = TimePickerDialog.newInstance(this, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), true);
+                starttimePickerDialog = TimePickerDialog.newInstance(this, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);
                 starttimePickerDialog.show(getActivity().getFragmentManager(), "Timepickerdialog");
                 break;
             case R.id.endTextView:
-                endtimePickerDialog = TimePickerDialog.newInstance(this, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), true);
+                endtimePickerDialog = TimePickerDialog.newInstance(this, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);
+
                 endtimePickerDialog.show(getActivity().getFragmentManager(), "Timepickerdialog");
                 break;
             case R.id.addButton:
@@ -154,7 +158,13 @@ public class AddReminderFragment extends Fragment implements View.OnClickListene
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         monthOfYear += 1;
-        rem.date = dayOfMonth + "/" + monthOfYear + "/" + year;
+        String mn=monthOfYear+"";
+        String d=dayOfMonth+"";
+        if(monthOfYear<10)
+             mn="0"+mn;
+        if(dayOfMonth<10)
+            d="0"+d;
+        rem.date = d + "/" + mn + "/" + year;
         dateRB3.setText(rem.date);
     }
 
@@ -162,10 +172,17 @@ public class AddReminderFragment extends Fragment implements View.OnClickListene
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
         TimePickerDialog tpd = (TimePickerDialog) getActivity().getFragmentManager().findFragmentByTag("Timepickerdialog");
         if (tpd == starttimePickerDialog) {
-            rem.startTime = hourOfDay + ":" + minute;
+            if (minute < 10)
+                rem.startTime = hourOfDay + ":0" + minute;
+            else
+                rem.startTime = hourOfDay + ":" + minute;
             setTimeView(startTimeTV, rem.startTime);
         } else {
-            rem.endTime = hourOfDay + ":" + minute;
+            if (minute < 10)
+                rem.endTime = hourOfDay + ":0" + minute;
+            else
+                rem.endTime = hourOfDay + ":" + minute;
+
             setTimeView(endTimeTV, rem.endTime);
         }
     }
@@ -190,4 +207,6 @@ public class AddReminderFragment extends Fragment implements View.OnClickListene
         dialog = builder.create();
         dialog.show();
     }
+
+
 }

@@ -1,0 +1,42 @@
+[33mcommit ece8abbcfd6f19bafc541c5aff81340c51d3fe2d[m
+Author: aman3095 <amanpreetsingh3095@gmail.com>
+Date:   Wed Apr 20 15:29:04 2016 +0530
+
+    Reformatting Code
+
+[33mcommit 2d8a34d3d7d0f73b308d850016d40ca92ef4e90f[m
+Author: aman3095 <amanpreetsingh3095@gmail.com>
+Date:   Wed Apr 20 15:17:45 2016 +0530
+
+    Added notification and alarm scheduling
+
+[33mcommit 1c31c68fd104e1413b53f882c5100931dbd8e159[m
+Merge: 5a865f6 e022723
+Author: aman3095 <amanpreetsingh3095@gmail.com>
+Date:   Tue Apr 19 18:02:12 2016 +0530
+
+    Merge branch 'dev_akul' of https://github.com/akul1994/ble-reminders into dev
+
+[33mcommit e022723c721be7c4b9733858734105a74014b2e7[m
+Author: Akul <Akul>
+Date:   Tue Apr 19 16:15:16 2016 +0530
+
+    Add reminders with firebase connectivity
+
+[33mcommit 5a865f6c3321de592a157a8800cc73347b56aec3[m
+Author: aman3095 <amanpreetsingh3095@gmail.com>
+Date:   Tue Apr 19 14:46:21 2016 +0530
+
+    Added connectivity code
+
+[33mcommit ddc802514a6a960e2208504a290660063e159203[m
+Author: Akul <Akul>
+Date:   Tue Apr 12 15:36:21 2016 +0530
+
+    Uploading project
+
+[33mcommit 90775a11de63514919ea0bd4ba4b51a7e4df3f1f[m
+Author: akul1994 <akul1994@gmail.com>
+Date:   Tue Apr 12 15:29:15 2016 +0530
+
+    Initial commit
