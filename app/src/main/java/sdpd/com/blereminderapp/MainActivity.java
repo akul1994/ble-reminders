@@ -1,5 +1,6 @@
 package sdpd.com.blereminderapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Reminder> remList;
     private ListView remListView;
     private ReminderListAdapter reminderListAdapter;
+    ProgressDialog progress;
 
     BluetoothAdapter mBluetoothAdapter;
     BluetoothConnectionManager mConnectionManager;
@@ -193,11 +195,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent=new Intent(this,ReminderInfoActivity.class);
         intent.putExtra(AppConstants.REMINDER_INTENT,remList.get(position));
         intent.putExtra(AppConstants.KEY_INTENT,remKeys.get(position));
-        startActivity(intent);
+        startActivityForResult(intent, 2);
     }
 
     @Override
     public void onReminderDone(int position) {
+        if(remKeys!=null&&remKeys.get(position)!=null)
         reminderRef.child(remKeys.get(position)).removeValue();
         remList.remove(position);
         reminderListAdapter.setRemList(remList);
@@ -219,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void fetchReminders() {
+        progress = ProgressDialog.show(this, "", getString(R.string.loading), true);
         remList=new ArrayList<>();
         remKeys=new ArrayList<>();
         Query queryRef = reminderRef.orderByChild("date");
@@ -231,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     remList.add(postSnapshot.getValue(Reminder.class));
                     remKeys.add(postSnapshot.getKey());
                     setupListView();
+                    progress.dismiss();
                 }
                 Log.d("info", remList.size() + "");
 
@@ -239,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                progress.dismiss();
             }
         });
     }
@@ -277,5 +282,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        if(addReminderFragment!=null&&addReminderFragment.isVisible())
+            getSupportFragmentManager().beginTransaction().remove(addReminderFragment).commit();
+        else
+        super.onBackPressed();
+    }
 
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        fetchReminders();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

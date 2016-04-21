@@ -2,8 +2,10 @@ package sdpd.com.blereminderapp;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -58,6 +60,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(firebaseRef.getAuth()!=null)
         {
             userId=firebaseRef.getAuth().getUid();
+           storeUserId(userId);
+            progress = ProgressDialog.show(this, "", getString(R.string.loading), true);
+
             getUserData();
         }
 
@@ -82,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onAuthenticated(AuthData authData) {
                             userId = authData.getUid();
+                            storeUserId(userId);
                             Toast.makeText(LoginActivity.this, "Successfully logged in.", Toast.LENGTH_SHORT).show();
                             getUserData();
 
@@ -168,6 +174,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void storeData(String uid, User user) {
         Firebase userRef = firebaseRef.child(AppConstants.USERS).child(uid).child(AppConstants.INFO);
+        userId=uid;
+        storeUserId(userId);
         userRef.setValue(user);
         progress.dismiss();
         regDialog.dismiss();
@@ -197,6 +205,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("info", dataSnapshot.toString());
                 userData = dataSnapshot.getValue(User.class);
+                progress.dismiss();
                 launchMain();
             }
 
@@ -215,6 +224,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
         finish();
 
+    }
+
+    public void storeUserId(String userId)
+    {
+        SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.SHARED_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor e=sharedpreferences.edit();
+        e.putString(AppConstants.UID,userId);
     }
 
 

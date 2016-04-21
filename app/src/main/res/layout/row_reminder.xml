@@ -9,6 +9,7 @@
     android:background="@color/bg_white"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
+    android:elevation="4dp"
    >
 
     <LinearLayout

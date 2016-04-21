@@ -186,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Done"
-                    android:id="@+id/button"
+                    android:id="@+id/doneButton"
                     android:background="@color/transparent"
                     android:drawableLeft="@drawable/ic_tick"
                     />
@@ -195,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Delete"
-                    android:id="@+id/button2"
+                    android:id="@+id/delButton"
                     android:background="@color/transparent"
                     android:drawableLeft="@drawable/ic_delete"
                     android:layout_marginLeft="16dp"

@@ -28,6 +28,7 @@ public class AppConstants {
     public static final String REM_B = "REM_B_DOME";
     public static final String REM_C = "REM_C_WING";
     public static final String SHARED_PREF="shared_pref";
+    public static final String UID="uid";
 
     public static final int NOTIFICATION_ID = 1;
 

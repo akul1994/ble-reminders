@@ -50,7 +50,7 @@ public class ReminderListAdapter extends BaseAdapter {
     }
     public void setRemList(ArrayList<Reminder> remList)
     {
-        remList.clear();
+        this.remList.clear();
         this.remList=remList;
         notifyDataSetChanged();
     }
