@@ -107,6 +107,10 @@ public  class Utils {
         builder.setContentTitle(rem.title);
         builder.setContentText(Utils.getLocationName(rem.locationId));
         builder.setSmallIcon(R.drawable.abc_ic_search_api_mtrl_alpha);
+        builder.setVibrate(new long[] { 0, 1000, 1000, 1000, 1000 });
+        builder.setLights(Color.RED, 3000, 3000);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
 
         Intent intent;
         if (isMultiple) {

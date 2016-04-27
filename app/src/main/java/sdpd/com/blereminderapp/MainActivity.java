@@ -7,13 +7,17 @@ import android.os.Bundle;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,6 +27,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -49,6 +54,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AppAlarmManager mAppAlarmManager;
     SharedPreferences sharedpreferences;
     private ArrayList<String> remKeys;
+    private Handler mHandler;
+    private String mCurrentMinAddress = "";
+    private static final String TAG = "MainActivity";
+
+    // Map of address to pair of sum and count.
+    HashMap<String, Pair<Double, Double>> deviceToAvgMap;
 
     private int REQUEST_ENABLE_BT = 1;
     private boolean isFromNotification;
@@ -61,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBluetoothAdapter = mConnectionManager.getBluetoothAdapter();
         mAppAlarmManager = new AppAlarmManager(getApplicationContext());
         remList = new ArrayList<>();
+
+        deviceToAvgMap = new HashMap<>();
+        mHandler = new Handler();
 
         isFromNotification=getIntent().getBooleanExtra(AppConstants.INTENT_FROM_NOTIF, false);
         checkForBluetooth();
@@ -121,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     mConnectionManager.startScan();
                     mMenu.findItem(R.id.toggle_scan).setTitle(R.string.stop_scan);
+                    mHandler.postDelayed(averageRunnable, AppConstants.TIME_THRESHOLD);
                 }
                 mIsScanning = !mIsScanning;
                 break;
@@ -130,11 +145,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void closestBeaconUpdated(String beaconAddress) {
-        // TODO
-        ArrayList<Reminder> list = Utils.getReminderList(this, "" + Utils.getLocIdFromBeaconAddress(beaconAddress));
-        Utils.displayNotification(this, list, "");
+    public void closestBeaconUpdated(String beaconAddress, double distance) {
+        if (!deviceToAvgMap.containsKey(beaconAddress)){
+            deviceToAvgMap.put(beaconAddress, new Pair(distance, 1D));
+        }
+        else {
+            double sum = (double)((Pair)deviceToAvgMap.get(beaconAddress)).first;
+            double count = (double)((Pair)deviceToAvgMap.get(beaconAddress)).second;
+            deviceToAvgMap.put(beaconAddress, new Pair(sum + distance, count + 1));
+        }
+//        ArrayList<Reminder> list = Utils.getReminderList(this, "" + Utils.getLocIdFromBeaconAddress(beaconAddress));
+//        Utils.displayNotification(this, list, "");
     }
+
+    Runnable averageRunnable = new Runnable() {
+        @Override
+            public void run() {
+            if (mIsScanning) {
+                Log.d(TAG, "Running averaging handler");
+                String minAddress = "";
+                double minAvg = Double.MAX_VALUE;
+                if (deviceToAvgMap != null) {
+                    minAvg = Double.MAX_VALUE;
+                    String address = "";
+                    Iterator iterator = deviceToAvgMap.keySet().iterator();
+                    while (iterator.hasNext()) {
+                        address = (String) iterator.next();
+                        Pair<Double, Double> p = deviceToAvgMap.get(address);
+                        double avg = p.first / p.second;
+                        if (avg < minAvg) {
+                            minAvg = avg;
+                            minAddress = address;
+                        }
+                    }
+                    deviceToAvgMap.clear();
+                }
+
+                if (!mCurrentMinAddress.equals(minAddress) && minAvg <= AppConstants.DISTANCE_THRESHOLD){
+                    ArrayList<Reminder> list = Utils.getReminderList(getApplicationContext(), "" + Utils.getLocIdFromBeaconAddress(minAddress));
+                    Utils.displayNotification(getApplicationContext(), list, "");
+                    mCurrentMinAddress = minAddress;
+                }
+                mHandler.postDelayed(averageRunnable, AppConstants.TIME_THRESHOLD);
+            }
+        }
+    };
 
     private void initViews(){
         mFAB = (FloatingActionButton) findViewById(R.id.fab);
