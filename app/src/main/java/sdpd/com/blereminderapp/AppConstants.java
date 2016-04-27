@@ -33,5 +33,6 @@ public class AppConstants {
 
     public static final String REMINDER_LIST = "reminder_list";
 
-
+    public static final Double DISTANCE_THRESHOLD = 10D;
+    public static final long TIME_THRESHOLD = 5 * 1000;
 }

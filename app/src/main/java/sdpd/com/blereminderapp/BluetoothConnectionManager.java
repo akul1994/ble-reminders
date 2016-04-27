@@ -58,11 +58,13 @@ public class BluetoothConnectionManager {
     }
 
     public void deviceAvailable(BluetoothDevice device, int rssi) {
+
         Log.d(TAG, "Device Available " + device.getAddress() + " Rssi = " + rssi);
 
         double distance = getDistanceFromRssi(rssi);
         Log.d(TAG, "Distance = " + distance + " Min = " + minDistance);
 
+        /*
         if (mKnownDeviceAddresses.contains(device.getAddress()) && !mDeviceToDistanceMap.containsKey(device.getAddress())) {
             mDeviceToDistanceMap.put(device.getAddress(), -1.0);
         } else {
@@ -81,12 +83,14 @@ public class BluetoothConnectionManager {
             minDistance = minEntry.getValue();
             String address = minEntry.getKey();
             if (!closestDeviceAddress.equals(address)) {
-                mBeaconDistanceListener.closestBeaconUpdated(address);
+                mBeaconDistanceListener.closestBeaconUpdated(address, minDistance);
                 closestDeviceAddress = address;
             }
         }
 
         Log.d(TAG, "Closest Device Address = " + closestDeviceAddress);
+        */
+        mBeaconDistanceListener.closestBeaconUpdated(device.getAddress(), distance);
     }
 
     public String getClosestDeviceAddress() {
@@ -99,5 +103,5 @@ public class BluetoothConnectionManager {
 }
 
 interface BeaconDistanceListener {
-    public void closestBeaconUpdated(String beaconAddress);
+    public void closestBeaconUpdated(String beaconAddress, double distance);
 }
